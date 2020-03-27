@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".LoginActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -21,26 +21,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create a new account"
+            android:text="Login"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Username"
-            app:met_floatingLabel="normal" />
-        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/email"
-            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Email"
             app:met_floatingLabel="normal" />
-
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/password"
             android:inputType="textPassword"
@@ -49,19 +40,11 @@
             android:layout_marginTop="10dp"
             android:hint="Password"
             app:met_floatingLabel="normal" />
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/confirmPassword"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Confirm password"
-            app:met_floatingLabel="normal" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="register"
-            android:id="@+id/btn_register"
+            android:text="Login"
+            android:id="@+id/btn_login"
             android:background="@color/colorPrimaryDark"
             android:textColor="#ffffff"
             android:layout_marginTop="15dp"/>
