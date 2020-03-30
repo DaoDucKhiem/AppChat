@@ -9,5 +9,5 @@ project xây dựng ứng dụng chat cho mobile
   * Vũ Đức Dũng
   
 Link hướng dẫn: https://www.youtube.com/watch?v=WsyJlFjJkyE&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=6&t=7s
-Tiến độ: hết video part 4
+Tiến độ: hết video part 5
 
