@@ -6,4 +6,8 @@ project xây dựng ứng dụng chat cho mobile
   * Đào Đức Khiêm
   * Trần Hải Dương
   * Đinh Việt Cường
+  * Vũ Đức Dũng
+  
+Link hướng dẫn: https://www.youtube.com/watch?v=WsyJlFjJkyE&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=6&t=7s
+Tiến độ: hết video part 4
 
