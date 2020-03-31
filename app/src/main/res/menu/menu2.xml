@@ -5,12 +5,12 @@
     <item
         android:id="@+id/voice_call"
         android:title="VoiceCall"
-        android:icon="@drawable/video_call"
+        android:icon="@drawable/voice_call"
         app:showAsAction="always" />
     <item
         android:id="@+id/video_call"
         android:title="VideoCall"
-        android:icon="@drawable/voice_call"
+        android:icon="@drawable/video_call"
         app:showAsAction="always"
         />
 

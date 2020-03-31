@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser fuser;
     DatabaseReference reference;
 
-    Intent intent;
+    private Intent intent;
 
 
     @Override
@@ -81,9 +82,25 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    //layout khi chuyển trạng thái vào cuộc trò chuyện
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu2, menu);
         return true;
+    }
+
+    //xử lý button ở menu 2
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.video_call:
+                Intent intent_ = new Intent(MessageActivity.this, CallingActivity.class);
+                intent_.putExtra("userIdContact", getIntent().getStringExtra("userid"));
+                startActivity(intent_);
+                finish();
+                break;
+            default: break;
+        }
+        return false;
     }
 }
