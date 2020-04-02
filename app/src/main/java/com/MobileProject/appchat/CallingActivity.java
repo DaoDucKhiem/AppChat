@@ -82,21 +82,21 @@ public class CallingActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.hasChild("calling") && !dataSnapshot.hasChild("Ringing")) {
+                        if (!dataSnapshot.hasChild("Calling") && !dataSnapshot.hasChild("Ringing")) {
                             final HashMap<String, Object> callingInfo = new HashMap<>();
-                            callingInfo.put("Calling", receiverUserId);
+                            callingInfo.put("calling", receiverUserId);
 
-                            userRef.child(senderUserId).child("calling")
+                            userRef.child(senderUserId).child("Calling")
                                     .updateChildren(callingInfo)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 final HashMap<String, Object> ringingInfo = new HashMap<>();
-                                                ringingInfo.put("Ringing", senderUserId);
+                                                ringingInfo.put("ringing", senderUserId);
 
                                                 userRef.child(receiverUserId)
-                                                        .child("ringing")
+                                                        .child("Ringing")
                                                         .updateChildren(ringingInfo);
                                             }
                                         }
