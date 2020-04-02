@@ -52,6 +52,8 @@ public class MessageActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     private Intent intent;
+    private String userid;
+    private String calledBy="";
 
 
     @Override
@@ -83,7 +85,7 @@ public class MessageActivity extends AppCompatActivity {
         text_send = findViewById(R.id.text_send);
 
         intent = getIntent();
-        final String userid = intent.getStringExtra("userid");
+        userid = intent.getStringExtra("userid");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         // xử lý sự kiện khi gửi tin nhắn
@@ -127,6 +129,38 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        checkForReceivingCall();
+    }
+
+
+    private void checkForReceivingCall() {
+        reference.child(userid)
+                .child("Ringing")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            if (dataSnapshot.hasChild("ringing")) {
+                                calledBy = dataSnapshot.child("ringing").getValue().toString();
+
+                                Intent callingIntent = new Intent(MessageActivity.this, CallingActivity.class);
+                                callingIntent.putExtra("userIdContact", calledBy);
+                                startActivity(callingIntent);
+                                finish();
+                            }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
 
     // thêm vào cơ sở dữ liệu tin nhắn vừa gửi
     private void sendMessage(String sender, String receiver, String message) {
@@ -166,6 +200,8 @@ public class MessageActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     //layout khi chuyển trạng thái vào cuộc trò chuyện
     @Override

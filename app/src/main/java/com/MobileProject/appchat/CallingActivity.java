@@ -82,27 +82,21 @@ public class CallingActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.hasChild("Calling") && !dataSnapshot.hasChild("Ringing")) {
+                        if (!dataSnapshot.hasChild("calling") && !dataSnapshot.hasChild("Ringing")) {
                             final HashMap<String, Object> callingInfo = new HashMap<>();
-                            callingInfo.put("userid", senderUserId);
-                            callingInfo.put("username", senderUserName);
-                            callingInfo.put("imageURL", senderUserImage);
                             callingInfo.put("Calling", receiverUserId);
 
-                            userRef.child(senderUserId).child("Calling")
+                            userRef.child(senderUserId).child("calling")
                                     .updateChildren(callingInfo)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 final HashMap<String, Object> ringingInfo = new HashMap<>();
-                                                ringingInfo.put("userid", receiverUserId);
-                                                ringingInfo.put("username", receiverUserName);
-                                                ringingInfo.put("imageURL", receiverUserImage);
                                                 ringingInfo.put("Ringing", senderUserId);
 
                                                 userRef.child(receiverUserId)
-                                                        .child("Ringing")
+                                                        .child("ringing")
                                                         .updateChildren(ringingInfo);
                                             }
                                         }
