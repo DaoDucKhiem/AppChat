@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,12 +133,12 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         checkForReceivingCall();
     }
 
 
     private void checkForReceivingCall() {
+
         reference.child(userid)
                 .child("Ringing")
                 .addValueEventListener(new ValueEventListener() {
@@ -146,12 +147,13 @@ public class MessageActivity extends AppCompatActivity {
 
                             if (dataSnapshot.hasChild("ringing")) {
                                 calledBy = dataSnapshot.child("ringing").getValue().toString();
-
+                                System.out.println("hehehe");
                                 Intent callingIntent = new Intent(MessageActivity.this, CallingActivity.class);
                                 callingIntent.putExtra("userIdContact", calledBy);
                                 startActivity(callingIntent);
                                 finish();
                             }
+
                     }
 
                     @Override
