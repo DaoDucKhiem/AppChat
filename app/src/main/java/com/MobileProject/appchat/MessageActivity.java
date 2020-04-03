@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,7 +117,8 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
+                    Picasso.get().load(user.getImageURL()).placeholder(R.drawable.prof_image).into(profile_image);
+                    //Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
                 }
 
                 readMessages(fuser.getUid(), userid, user.getImageURL());
@@ -133,27 +134,24 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         checkForReceivingCall();
     }
 
 
     private void checkForReceivingCall() {
-
         reference.child(userid)
                 .child("Ringing")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                             if (dataSnapshot.hasChild("ringing")) {
                                 calledBy = dataSnapshot.child("ringing").getValue().toString();
-                                System.out.println("hehehe");
+
                                 Intent callingIntent = new Intent(MessageActivity.this, CallingActivity.class);
                                 callingIntent.putExtra("userIdContact", calledBy);
                                 startActivity(callingIntent);
-                                finish();
                             }
-
                     }
 
                     @Override
