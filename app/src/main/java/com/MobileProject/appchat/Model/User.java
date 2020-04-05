@@ -4,6 +4,16 @@ public class User {
     private String id;
     private String username;
     private String imageURL;
+    private Object Calling = null;
+    private Object Ringing = null;
+
+    public User(String id, String username, String imageURL, Object calling, Object ringing) {
+        this.id = id;
+        this.username = username;
+        this.imageURL = imageURL;
+        Calling = calling;
+        Ringing = ringing;
+    }
 
     public User(String id, String username, String imageURL) {
         this.id = id;
@@ -37,5 +47,21 @@ public class User {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public Object getCalling() {
+        return Calling;
+    }
+
+    public void setCalling(Object calling) {
+        Calling = calling;
+    }
+
+    public Object getRinging() {
+        return Ringing;
+    }
+
+    public void setRinging(Object ringing) {
+        Ringing = ringing;
     }
 }
