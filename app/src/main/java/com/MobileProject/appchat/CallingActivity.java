@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,8 +29,10 @@ public class CallingActivity extends AppCompatActivity {
     private ImageView btn_call, btn_cancel;
 
     private String receiverUserId, receiverUserName, receiverUserImage;
-    private String senderUserId, senderUserName, senderUserImage, checker = "", callingID="", ringingID="";
+    private String senderUserId, senderUserName, senderUserImage, checker = "", callingID = "", ringingID = "";
     private DatabaseReference userRef;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class CallingActivity extends AppCompatActivity {
         receiverUserId = getIntent().getExtras().get("userIdContact").toString();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.ringing);
+
         profileImage = findViewById(R.id.imageCalling);
         nameUserContact = findViewById(R.id.name_calling);
         btn_call = findViewById(R.id.make_call);
@@ -48,9 +53,33 @@ public class CallingActivity extends AppCompatActivity {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mediaPlayer.stop();
                 checker = "clicked";
 
                 cancelCallingUser();
+            }
+        });
+
+        btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mediaPlayer.stop();
+
+                final HashMap<String, Object> callingPickUpMap = new HashMap<>();
+                callingPickUpMap.put("picked", "picked");
+                userRef.child(senderUserId).child("Ringing")
+                        .updateChildren(callingPickUpMap)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()) {
+                                    Intent intent = new Intent(CallingActivity.this, VideoChatActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
             }
         });
 
@@ -89,11 +118,14 @@ public class CallingActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        mediaPlayer.start();
+
         userRef.child(receiverUserId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!checker.equals("clicked") && !dataSnapshot.hasChild("Calling") && !dataSnapshot.hasChild("Ringing")) {
+
                             final HashMap<String, Object> callingInfo = new HashMap<>();
                             callingInfo.put("calling", receiverUserId);
 
@@ -127,6 +159,12 @@ public class CallingActivity extends AppCompatActivity {
                 if (dataSnapshot.child(senderUserId).hasChild("Ringing") && !dataSnapshot.child(senderUserId).hasChild("Calling")) {
                     btn_call.setVisibility(View.VISIBLE);
                 }
+
+                if (dataSnapshot.child(receiverUserId).child("Ringing").hasChild("picked")) {
+                    mediaPlayer.stop();
+                    Intent intent = new Intent(CallingActivity.this, VideoChatActivity.class);
+                    startActivity(intent);
+                }
             }
 
             @Override
@@ -149,21 +187,20 @@ public class CallingActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                   if(task.isSuccessful()) {
-                                       userRef.child(senderUserId).child("Calling")
-                                               .removeValue()
-                                               .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                   @Override
-                                                   public void onComplete(@NonNull Task<Void> task) {
-                                                      startActivity(new Intent(CallingActivity.this, MainActivity.class));
-                                                      finish();
-                                                   }
-                                               });
-                                   }
+                                    if (task.isSuccessful()) {
+                                        userRef.child(senderUserId).child("Calling")
+                                                .removeValue()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        startActivity(new Intent(CallingActivity.this, MainActivity.class));
+                                                        finish();
+                                                    }
+                                                });
+                                    }
                                 }
                             });
-                }
-                else {
+                } else {
                     startActivity(new Intent(CallingActivity.this, MainActivity.class));
                     fileList();
                 }
@@ -187,7 +224,7 @@ public class CallingActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
+                                    if (task.isSuccessful()) {
                                         userRef.child(senderUserId).child("Ringing")
                                                 .removeValue()
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -200,8 +237,7 @@ public class CallingActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }
-                else {
+                } else {
                     startActivity(new Intent(CallingActivity.this, MainActivity.class));
                     fileList();
                 }
